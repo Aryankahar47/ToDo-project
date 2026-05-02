@@ -87,7 +87,8 @@ function handleEdit(index){
   return(
     <div className="list">
       <h3 id="heading">Listings</h3>
-      <input type="text" placeholder="Enter Task" value={input} onChange={(e)=>setInput(e.target.value)}></input>
+      <div className="input">
+        <input type="text" placeholder="Enter Task" value={input} onChange={(e)=>setInput(e.target.value)}></input>
       <button onClick={()=>{
         if(input.trim()===""){
           return
@@ -111,15 +112,26 @@ function handleEdit(index){
         }
         
         setInput("");
-      }}>{editInput===null?"Add":"Update"}</button>
-      <ol>
+      }}>{editInput===null?"Add":"Update"}
+      </button>
+      </div>
+      
+      <ol >
         {tasks.map((task, index)=>(
-          <li key={index} className="task-item">{task.title} 
-          <button onClick={()=> handleToggle(index)}>
-            {task.completed?"completed":"Not completed"}
+          <li className="insideList" key={index} >
+            <span>{task.title} </span>
+            <div className="actions">
+              <button onClick={()=> handleToggle(index)}>
+                <span>
+                  {task.completed?"completed":"Not completed"}
+                </span>
             </button> 
-          <button onClick={()=> handleDelete(index)}>Delete</button>
+         
           <button onClick={()=>handleEdit(index)}>Edit</button>
+          <button onClick={()=> handleDelete(index)}>Delete</button>
+
+            </div>
+          
           </li>
           
           
