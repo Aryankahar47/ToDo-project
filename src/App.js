@@ -37,7 +37,18 @@ import { useState } from "react";
 
 
 function App(){
-  const [tasks, setTask] = useState(["Code", "Eat", "Sleep", "repeat"])
+  const [tasks, setTasks] = useState([{
+                                      title: "code",
+                                      completed: false
+                                      },
+                                    {
+                                      title: "eat",
+                                      completed: false
+                                      },
+                                    {
+                                      title: "sleep",
+                                      completed:false
+                                      }])
   const [input, setInput] = useState("")
   return(
     <div className="list">
@@ -47,12 +58,18 @@ function App(){
         if(input.trim()===""){
           return
         }
-        setTask([...tasks, input]);
+        setTasks([...tasks, {
+                            title: input,
+                            completed: false
+                             }]);
         setInput("");
       }}>Add</button>
       <ol>
         {tasks.map((task, index)=>(
-          <li key={index} className="task-item">{task}</li>
+          <li key={index} className="task-item">{task.title} 
+          <button>{task.completed?<span>completed</span>:<span>Not completed</span>}</button> 
+          <button>Delete</button></li>
+          
         ))}
       </ol>
 
