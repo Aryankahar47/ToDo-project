@@ -50,6 +50,40 @@ function App(){
                                       completed:false
                                       }])
   const [input, setInput] = useState("")
+
+
+  const [editInput, setEditInput] = useState(null)
+ 
+
+  function handleToggle(index){
+  const updatedTask = tasks.map((task, i)=>{
+    if(i===index){
+      return{
+        ...task, completed: !task.completed
+      };
+
+    }
+    return task;
+  });
+  setTasks(updatedTask);
+}
+
+function handleDelete(index){
+  const deleteTask = tasks.filter((task, i)=>{
+       if(i!==index){
+        return true;
+       }
+       else{
+        return false;
+       }
+  })
+  setTasks(deleteTask)
+}
+
+function handleEdit(index){
+  setInput(tasks[index].title);
+  setEditInput(index);
+}
   return(
     <div className="list">
       <h3 id="heading">Listings</h3>
@@ -58,17 +92,36 @@ function App(){
         if(input.trim()===""){
           return
         }
-        setTasks([...tasks, {
+
+        if(editInput===null){
+          setTasks([...tasks, {
                             title: input,
                             completed: false
                              }]);
+
+        }else{
+          const updatedTask= tasks.map((task, i)=>{
+            if(i===editInput){
+              return{...task, title: input}
+            }
+            return task;
+          })
+          setTasks(updatedTask);
+          setEditInput(null);
+        }
+        
         setInput("");
-      }}>Add</button>
+      }}>{editInput===null?"Add":"Update"}</button>
       <ol>
         {tasks.map((task, index)=>(
           <li key={index} className="task-item">{task.title} 
-          <button>{task.completed?<span>completed</span>:<span>Not completed</span>}</button> 
-          <button>Delete</button></li>
+          <button onClick={()=> handleToggle(index)}>
+            {task.completed?"completed":"Not completed"}
+            </button> 
+          <button onClick={()=> handleDelete(index)}>Delete</button>
+          <button onClick={()=>handleEdit(index)}>Edit</button>
+          </li>
+          
           
         ))}
       </ol>
